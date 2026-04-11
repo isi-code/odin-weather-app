@@ -5,9 +5,11 @@ const main = document.querySelector("main");
 
 class WeatherForecast {
   #weatherAPI;
+  #gifAPI;
 
-  constructor(weatherAPI) {
+  constructor(weatherAPI, gifAPI) {
     this.#weatherAPI = weatherAPI;
+    this.#gifAPI = gifAPI;
   }
 
   async getWeatherData(place) {
@@ -19,51 +21,62 @@ class WeatherForecast {
       );
 
       const weatherData = await requestWeather.json();
-
       const { description } = weatherData;
 
       weatherForecast["currentWeatherLongDesc"] = description;
 
       const fiveDayWeather = weatherData.days.slice(0, 5);
 
-      weatherForecast["fiveDayWeather"] = fiveDayWeather.map((day) => {
+      weatherForecast["fiveDayWeather"] = await Promise.all( fiveDayWeather.map( async (day) => {
         const {
-          icon,
           description,
           conditions,
           datetime,
           temp,
           sunrise,
-          sunset,
+          sunset
         } = day;
 
+        const url = await this.#lookUpWeatherGif(conditions);
+
         return {
-          icon,
+          gifUrl: url,
           description,
           conditions,
           datetime,
           temp,
           sunrise,
-          sunset,
-        };
-      });
+          sunset
+        }
+      }));
+
     } catch (error) {
       console.error(error);
     }
 
     return weatherForecast;
   }
+
+  #lookUpWeatherGif(weatherDesc) {
+    return fetch(`
+      https://api.giphy.com/v1/gifs/translate?api_key=${this.#gifAPI}&s=${weatherDesc}
+    `)
+      .then((response) => response.json())
+      .then((response) => {
+        return response.data.images.original.url
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 }
 
-
-
-const weatherForecast = new WeatherForecast(WEATHER_API_KEY);
-
-// Display to DOM
+// Display Form to DOM
 main.append(createForm());
 
-document.forms[0].addEventListener("submit", (e) => {
+document.forms[0].addEventListener("submit", async (e) => {
   e.preventDefault();
   const place = document.forms[0].place.value;
-  weatherForecast.getWeatherData(place).then(v => { console.log(v) });
+  const weatherForecast = await new WeatherForecast(WEATHER_API_KEY, GIF_API_KEY).getWeatherData(place);
+  console.log(weatherForecast);
 });
