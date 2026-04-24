@@ -10,18 +10,20 @@ export class WeatherForecast {
   }
 
   async getWeatherData(place) {
-    const weatherForecast = {};
-
     try {
       const requestWeather = await fetch(
         `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${place}?key=${this.#weatherAPI}`,
       );
 
       const weatherData = await requestWeather.json();
-
-      const fiveDayWeather = weatherData.days.slice(0, 5);
-
-      weatherForecast["fiveDayWeather"] = await Promise.all( fiveDayWeather.map( async (day) => {
+      
+      /*
+        This long code portion has the purpose of further processing the data obtained from the API
+        and put it into an object where it is ready to use.
+        
+        It also makes several API calls to get a relevant GIF about the weather.
+      */      
+      return await Promise.all( weatherData.days.slice(0, 6).map(async (day) => {
         const {
           description,
           conditions,
@@ -41,13 +43,12 @@ export class WeatherForecast {
           sunrise,
           sunset
         }
+
       }));
 
     } catch (error) {
       console.error(error);
     }
-
-    return weatherForecast;
   }
 
   #lookUpWeatherGif(weatherDesc) {

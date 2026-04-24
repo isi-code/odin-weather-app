@@ -1,5 +1,5 @@
 import { createForm } from "./js/dom-form.js"
-import { submitForm } from "./js/form-logic.js";
+import { formSubmitted } from "./js/form-logic.js";
 
 const main = document.querySelector("main");
 
@@ -7,4 +7,7 @@ const main = document.querySelector("main");
 const weatherForm = createForm();
 main.append(weatherForm);
 
-weatherForm.addEventListener("submit", (e) => { submitForm(e, weatherForm); });
+weatherForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const currWeatherCard = formSubmitted(weatherForm.place.value);
+});
