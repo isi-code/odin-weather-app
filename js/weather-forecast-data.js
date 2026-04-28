@@ -1,4 +1,5 @@
 import { WEATHER_API_KEY, GIF_API_KEY } from "../env.js";
+//import { format } from "date-fns";
 
 export class WeatherForecast {
   #weatherAPI;
@@ -20,8 +21,6 @@ export class WeatherForecast {
       /*
         This long code portion has the purpose of further processing the data obtained from the API
         and put it into an object where it is ready to use.
-        
-        It also makes several API calls to get a relevant GIF about the weather.
       */      
       return await Promise.all( weatherData.days.slice(0, 6).map(async (day) => {
         const {
@@ -29,38 +28,30 @@ export class WeatherForecast {
           conditions,
           datetime,
           temp,
+          icon,
+          feelslike,
+          tempmax,
+          tempmin,
           sunrise,
           sunset
         } = day;
 
-        const url = await this.#lookUpWeatherGif(conditions);
-
         return {
-          gifUrl: url,
+          icon: `img/icons/${icon}.svg`,
           description,
-          datetime,
+          //fullDate: format(new Date(datetime), 'PPPP'),
+          fullDate: datetime,
+          feelslike,
           temp,
+          tempmax,
+          tempmin,
           sunrise,
           sunset
         }
-
       }));
 
     } catch (error) {
       console.error(error);
     }
-  }
-
-  #lookUpWeatherGif(weatherDesc) {
-    return fetch(`
-      https://api.giphy.com/v1/gifs/translate?api_key=${this.#gifAPI}&s=${weatherDesc}
-    `)
-      .then((response) => response.json())
-      .then((response) => {
-        return response.data.images.original.url
-      })
-      .catch((err) => {
-        console.error(err);
-      });
   }
 }
