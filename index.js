@@ -6,7 +6,7 @@ class WeatherApp {
         this.container = this.#createContainers(container);
         this.formContainer = this.container.querySelector(".formSection");
         this.weatherCont = this.container.querySelector(".weatherForecastSect");
-        this.#consultWeatherForm();
+        this.#createWeatherForm();
     }
 
     #createContainers(container){
@@ -20,17 +20,26 @@ class WeatherApp {
         return container
     }
 
-    #consultWeatherForm(){
+    #createWeatherForm(){
         const weatherForm = createForm();
 
         weatherForm.addEventListener("submit", (e) => {
             e.preventDefault();
-            const currWeatherCard = formSubmitted(weatherForm.place.value);
-            this.weatherCont.append(currWeatherCard);
+            const weatherData = formSubmitted(weatherForm.place.value);
+            this.#displayCurrWeather(weatherData);
         });
 
         this.formContainer.append(weatherForm);        
         return this.container
+    }
+
+    #displayCurrWeather(weatherForecast){
+        console.log(weatherForecast);
+        //const domWeather = new DOMWeather();
+        //const weatherCard = domWeather.currWeatherTable();
+        
+        //domWeather.addWeatherData(weatherCard);
+        //this.weatherCont.append(weatherCard);
     }
 
 }
