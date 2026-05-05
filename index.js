@@ -1,5 +1,6 @@
 import { createForm } from "./js/dom-form.js"
 import { formSubmitted } from "./js/form-logic.js";
+import { DOMWeather } from "./js/dom-weather.js";
 
 class WeatherApp {
     constructor(container){
@@ -23,9 +24,11 @@ class WeatherApp {
     #createWeatherForm(){
         const weatherForm = createForm();
 
-        weatherForm.addEventListener("submit", (e) => {
+        weatherForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const weatherData = formSubmitted(weatherForm.place.value);
+            const place = weatherForm.place.value;
+            const tempUnit = weatherForm.tempUnit.value;
+            const weatherData = await formSubmitted(place, tempUnit);
             this.#displayCurrWeather(weatherData);
         });
 

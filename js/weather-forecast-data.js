@@ -10,10 +10,10 @@ export class WeatherForecast {
     this.#gifAPI = GIF_API_KEY;
   }
 
-  async getWeatherData(place) {
+  async getWeatherData(place, tempUnit) {
     try {
       const requestWeather = await fetch(
-        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${place}?key=${this.#weatherAPI}`,
+        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${place}?unitGroup=${tempUnit}&key=${this.#weatherAPI}`,
       );
 
       const weatherData = await requestWeather.json();
@@ -36,15 +36,17 @@ export class WeatherForecast {
           sunset
         } = day;
 
+        const tempUnitSymbol = tempUnit === 'metric' ? '°C': '°F';
+
         return {
           icon: `img/icons/${icon}.svg`,
           description,
           //fullDate: format(new Date(datetime), 'PPPP'),
           fullDate: datetime,
-          feelslike,
-          temp,
-          tempmax,
-          tempmin,
+          temp: temp + tempUnitSymbol,
+          feelslike: `Feels like ${feelslike}${tempUnitSymbol}`,
+          tempmax: tempmax + tempUnitSymbol,
+          tempmin: tempmin + tempUnitSymbol,
           sunrise,
           sunset
         }
