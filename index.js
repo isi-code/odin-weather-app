@@ -1,6 +1,6 @@
 import { createForm } from "./js/dom-form.js"
 import { formSubmitted } from "./js/form-logic.js";
-import { DOMWeather } from "./js/dom-weather.js";
+import { currWeatherTable } from "./js/dom-weather.js";
 
 class WeatherApp {
     constructor(container){
@@ -37,12 +37,8 @@ class WeatherApp {
     }
 
     #displayCurrWeather(weatherForecast){
-        console.log(weatherForecast);
-        //const domWeather = new DOMWeather();
-        //const weatherCard = domWeather.currWeatherTable();
-        
-        //domWeather.addWeatherData(weatherCard);
-        //this.weatherCont.append(weatherCard);
+        const weatherCard = currWeatherTable(weatherForecast);
+        this.weatherCont.append(weatherCard);
     }
 
 }
