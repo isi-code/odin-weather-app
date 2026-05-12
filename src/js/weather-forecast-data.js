@@ -1,5 +1,6 @@
-import { WEATHER_API_KEY, GIF_API_KEY } from "../env.js";
-//import { format } from "date-fns";
+import { WEATHER_API_KEY } from "../../env.js";
+import { format } from "date-fns";
+
 
 export class WeatherForecast {
   #weatherAPI;
@@ -7,7 +8,6 @@ export class WeatherForecast {
 
   constructor() {
     this.#weatherAPI = WEATHER_API_KEY;
-    this.#gifAPI = GIF_API_KEY;
   }
 
   async getWeatherData(place, tempUnit) {
@@ -37,12 +37,12 @@ export class WeatherForecast {
         } = day;
 
         const tempUnitSymbol = tempUnit === 'metric' ? '°C': '°F';
+        const {default: iconUrl } = await import(`../img/icons/${icon}.svg`);
 
         return {
-          icon: `img/icons/${icon}.svg`,
+          icon: iconUrl,
           description,
-          //fullDate: format(new Date(datetime), 'PPPP'),
-          fullDate: datetime,
+          fullDate: format(new Date(datetime), 'PPPP'),
           temp: temp + tempUnitSymbol,
           feelslike: `Feels like ${feelslike}${tempUnitSymbol}`,
           tempmax: tempmax + tempUnitSymbol,

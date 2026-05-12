@@ -26,7 +26,7 @@ const formDOM = {
               },
               {
                 label: {
-                  textContent: "Celsius (C)",
+                  textContent: "Celsius (°C)",
                   htmlFor: "celsius",
                 },
               },
@@ -38,7 +38,7 @@ const formDOM = {
                   value: "us",
                 },
               },
-              { label: { textContent: "Farenheit (F)", htmlFor: "faren" } },
+              { label: { textContent: "Farenheit (°F)", htmlFor: "faren" } },
             ],
             attr: {
               className: "tempMetric",

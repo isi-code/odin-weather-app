@@ -1,6 +1,9 @@
-import { createForm } from "./js/dom-form.js"
+import 'normalize.css';
+import './css/styles.css';
+import { createForm } from "./js/dom-form.js";
 import { formSubmitted } from "./js/form-logic.js";
 import { currWeatherTable } from "./js/dom-weather.js";
+
 
 class WeatherApp {
     constructor(container){

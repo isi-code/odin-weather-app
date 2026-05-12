@@ -1,0 +1,29 @@
+{
+  "name": "odin-weather-app",
+  "version": "1.0.0",
+  "description": "Application to display the weather forecast",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack serve"
+  },
+  "keywords": [],
+  "author": "isi-code",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.2",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "normalize.css": "^8.0.1"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.4",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.7",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.106.2",
+    "webpack-cli": "^7.0.2",
+    "webpack-dev-server": "^5.2.4"
+  }
+}
