@@ -1,50 +1,41 @@
 import 'normalize.css';
 import './css/styles.css';
-import { createForm } from "./js/dom-form.js";
-import { formSubmitted } from "./js/form-logic.js";
-import { currWeatherTable } from "./js/dom-weather.js";
-
+import { WeatherAppDom } from './js/weatherDom.js';
+import { WeatherAppLogic } from './js/weather-logic.js';
+import { WeatherForecast } from './js/weather-forecast-data.js';
 
 class WeatherApp {
-    constructor(container){
-        this.container = this.#createContainers(container);
-        this.formContainer = this.container.querySelector(".formSection");
-        this.weatherCont = this.container.querySelector(".weatherForecastSect");
-        this.#createWeatherForm();
+    constructor(domHandler, eventHandler){
+      this.weatherDom = domHandler;
+      this.eventHandler = eventHandler;
+
+      this.init();
     }
 
-    #createContainers(container){
-        const formSection = document.createElement("section");
-        const weatherSection = document.createElement("section");
-
-        formSection.className = "formSection";
-        weatherSection.className = "weatherForecastSect";
-
-        container.append(formSection, weatherSection);
-        return container
+    init(){
+        const formSection = this.weatherDom.formSection();
+        //The newly create form section is appended to the root tag
+        this.weatherDom.container.append(formSection);
+        this.#weatherForm();        
     }
 
-    #createWeatherForm(){
-        const weatherForm = createForm();
+    async #weatherForm(){
+        // This is the form element inside the formSection created with the `init()` method
+        const form = this.weatherDom.searchWeatherForm;
 
-        weatherForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const place = weatherForm.place.value;
-            const tempUnit = weatherForm.tempUnit.value;
-            const weatherData = await formSubmitted(place, tempUnit);
-            this.#displayCurrWeather(weatherData);
+        form.addEventListener('submit', async(e) => {
+            const weatherCard = await this.eventHandler.submitForm(
+                (e), (data) => this.weatherDom.currWeatherTable(data)
+            );
+            
+            this.weatherDom.container.append(weatherCard);
         });
-
-        this.formContainer.append(weatherForm);        
-        return this.container
     }
-
-    #displayCurrWeather(weatherForecast){
-        const weatherCard = currWeatherTable(weatherForecast);
-        this.weatherCont.append(weatherCard);
-    }
-
 }
 
-const main = document.querySelector("main");
-const weatherApp = new WeatherApp(main);
+const rootTag = document.getElementById("weatherApp");
+const domHandler = new WeatherAppDom(rootTag);
+const weatherForecastData =  new WeatherForecast(process.env.WEATHER_API_KEY);
+const eventHandler = new WeatherAppLogic(weatherForecastData);
+
+const weatherApp = new WeatherApp(domHandler, eventHandler);

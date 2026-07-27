@@ -1,11 +1,7 @@
 export class WeatherAppDom {
     constructor(elem){
         this.container = elem;
-    }
-
-    init(){
-        const formSection = this.formSection();
-        this.container.append(formSection);
+        this.searchWeatherForm = null;
     }
 
     formSection(){
@@ -19,6 +15,7 @@ export class WeatherAppDom {
 
         const formSection = this.#createDOM(formSectionTemp);
         const form = this.#createForm();
+        this.searchWeatherForm = form;
 
         formSection.append(form);
 
