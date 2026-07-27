@@ -4,7 +4,7 @@
   "description": "Application to display the weather forecast",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --env NODE_ENV=production",
     "dev": "webpack serve"
   },
   "keywords": [],

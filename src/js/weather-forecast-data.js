@@ -1,13 +1,10 @@
-import { WEATHER_API_KEY } from "../../env.js";
 import { format } from "date-fns";
-
 
 export class WeatherForecast {
   #weatherAPI;
-  #gifAPI;
 
-  constructor() {
-    this.#weatherAPI = WEATHER_API_KEY;
+  constructor(apiKey) {
+    this.#weatherAPI = apiKey;
   }
 
   async getWeatherData(place, tempUnit) {
