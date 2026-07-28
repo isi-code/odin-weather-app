@@ -1,16 +1,16 @@
-main{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
 }
 
-form{
-    display: flex;
-    flex-direction: column;
-    gap:.5rem;
-    padding: 1rem;
-    background-color: aliceblue;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: aliceblue;
 }
