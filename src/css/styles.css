@@ -1,4 +1,13 @@
-main {
+@font-face {
+  font-family: 'newsweekly';
+  src: url('../fonts/newsweekly-Regular.ttf');
+}
+
+* {
+  font-family: 'newsweekly', serif;
+}
+
+#weatherApp {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -7,10 +16,14 @@ main {
   padding: 1rem;
 }
 
+.formSect > h1 {
+  text-align: center;
+}
+
 form {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding: 1rem;
-  background-color: aliceblue;
+  border: 5px solid black;
 }
