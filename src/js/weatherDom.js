@@ -1,17 +1,19 @@
+// I need to split weather card from the section where the cards are gonna to be
 export class WeatherAppDom {
   constructor(elem) {
     this.container = elem;
     this.searchWeatherForm = null;
+    this.forecastSect = null;
   }
 
   formSection() {
-    const formSectionTemp = {
+    const template = {
       tag: 'section',
       prop: { className: 'formSect' },
       children: [{ tag: 'h1', prop: { textContent: 'Weather app' } }],
     };
 
-    const formSection = this.#createDOM(formSectionTemp);
+    const formSection = this.#createDOM(template);
     const form = this.#createForm();
     this.searchWeatherForm = form;
 
@@ -37,6 +39,18 @@ export class WeatherAppDom {
             placeholder: 'Example: Tijuana',
             name: 'place',
             id: 'place',
+          },
+        },
+        { tag: 'label', prop: { textContent: 'Days', htmlFor: 'days' } },
+        {
+          tag: 'input',
+          prop: {
+            type: 'number',
+            min:1,
+            placeholder: 7,
+            max:15,
+            name: 'days',
+            id: 'days',
           },
         },
         {
@@ -89,40 +103,115 @@ export class WeatherAppDom {
     return form;
   }
 
-  currWeatherTable(weatherData) {
-    const currWeatherData = weatherData[0];
-    const weatherCardTemplate = this.#attachDataTable(currWeatherData);
-    const weatherCard = this.#createDOM(weatherCardTemplate);
+  forecastSection() {
+    const template = {
+      tag: 'section',
+      prop: { className: 'forecastSect' },
+      children: [{ tag: 'h2', prop: { textContent: 'Weather Forecast' } }],
+    };
 
-    return weatherCard;
+    const formSection = this.#createDOM(template);
+    this.forecastSect = formSection;
+
+    return formSection
   }
 
-  extendedWeatherTable(weatherData) {
-    const extWeatherData = weatherData;
+  weatherForecast(weatherData) {
+    const template = {
+      tag: 'div',
+      prop: { className: 'cardsCont' },
+    };
 
-    return extWeatherData.map((cardData) => {
-      const cardTemplate = this.#attachDataTable(cardData);
-      const weatherCard = this.#createDOM(cardTemplate);
+    const cardsContainer = this.#createDOM(template);
 
-      return weatherCard;
+    const weatherCards = weatherData.map((dayData, idx) => { 
+      const {
+        fullDate,
+        icon,
+        description,
+        temp,
+      } = dayData;
+
+      const card = this.#weatherCard(fullDate, icon, description, temp, idx);
+      const table = this.#weatherTable(dayData);
+      card.append(table)
+      
+      return card
     });
+
+    cardsContainer.append(...weatherCards);
+
+    return cardsContainer
   }
 
-  #attachDataTable(data) {
+  #weatherTable(data){
     const {
-      fullDate,
-      icon,
-      description,
-      temp,
       sunrise,
       sunset,
       tempmin,
       tempmax,
     } = data;
 
-    return {
+    const template = {
+      tag: 'table',
+      children: [
+        {
+          tag: 'thead',
+          children: [
+            {
+              tag: 'tr',
+              children: [
+                {
+                  tag: 'th',
+                  prop: { textContent: 'Weather Details', colSpan: 2, scope: 'col'},
+                },
+              ],
+            },
+          ],
+        },
+        {
+          tag: 'tbody',
+          children: [
+            {
+              tag: 'tr',
+              children: [
+                { tag: 'td', prop: { textContent: 'Sunrise', scope: 'row' } },
+                { tag: 'td', prop: { textContent: sunrise } },
+              ],
+            },
+            {
+              tag: 'tr',
+              children: [
+                { tag: 'td', prop: { textContent: 'Sunset', scope: 'row' } },
+                { tag: 'td', prop: { textContent: sunset } },
+              ],
+            },
+            {
+              tag: 'tr',
+              children: [
+                { tag: 'td', prop: { textContent: 'Min Temperature', scope: 'row' } },
+                { tag: 'td', prop: { textContent: tempmin } },
+              ],
+            },
+            {
+              tag: 'tr',
+              children: [
+                { tag: 'td', prop: { textContent: 'Max Temperature', scope: 'row' } },
+                { tag: 'td', prop: { textContent: tempmax } },
+              ],
+            },
+          ],
+        },
+      ],
+    }
+
+    return this.#createDOM(template)
+  }
+
+  #weatherCard(fullDate, icon, description, temp, idx) {
+    const template = {
       tag: 'div',
-      prop: { className: 'weatherCard' },
+      prop: { className: 'weatherCard', dataset:{ cardIdx: idx } },
       children: [
         {
           tag: 'div',
@@ -147,66 +236,28 @@ export class WeatherAppDom {
             },
           ],
         },
-        {
-          tag: 'table',
-          children: [
-            {
-              tag: 'thead',
-              children: [
-                {
-                  tag: 'tr',
-                  children: [
-                    {
-                      tag: 'th',
-                      prop: { textContent: 'Weather Details', colSpan: 2 },
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              tag: 'tbody',
-              children: [
-                {
-                  tag: 'tr',
-                  children: [
-                    { tag: 'td', prop: { textContent: 'Sunrise' } },
-                    { tag: 'td', prop: { textContent: sunrise } },
-                  ],
-                },
-                {
-                  tag: 'tr',
-                  children: [
-                    { tag: 'td', prop: { textContent: 'Sunset' } },
-                    { tag: 'td', prop: { textContent: sunset } },
-                  ],
-                },
-                {
-                  tag: 'tr',
-                  children: [
-                    { tag: 'td', prop: { textContent: 'Min Temperature' } },
-                    { tag: 'td', prop: { textContent: tempmin } },
-                  ],
-                },
-                {
-                  tag: 'tr',
-                  children: [
-                    { tag: 'td', prop: { textContent: 'Max Temperature' } },
-                    { tag: 'td', prop: { textContent: tempmax } },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
       ],
     };
+
+    const weatherCard = this.#createDOM(template);
+    return weatherCard
   }
 
   #createDOM(obj) {
     const tag = document.createElement(obj.tag);
 
-    if (obj.prop) Object.assign(tag, obj.prop);
+    if (obj.prop) {
+      for(const [key, value] of Object.entries(obj.prop)){
+        if (typeof value == 'object' && value !== null){
+          if (key in tag && typeof tag[key] === 'object'){
+            Object.assign(tag[key], value);
+          }
+        }
+        else{
+          tag[key] = value
+        }
+      }
+    }
 
     if (obj.children) {
       const content = obj.children.map((el) => {
@@ -220,3 +271,28 @@ export class WeatherAppDom {
     return tag;
   }
 }
+
+// const objValue = Object.values(properties).some(value => value !== null && typeof value === "object");
+
+// if (objValue) {
+//   Object.entries(properties)
+//   .filter(([key, value]) => typeof value === "object")
+//   .forEach(([key, value]) => { 
+//     Object.assign(tag[key], value);
+//   });        
+// }
+// else {
+//   Object.assign(tag, properties);
+// }     
+
+// if (obj.prop) 
+//   for (const [key, value] of Object.entries(obj.prop)){
+//     if (value !== null && typeof value === "object") {
+//       if (key in tag && typeof tag[key] === "object"){
+//         Object.assign(tag[key], value);
+//       }
+//     }
+//     else {
+//       tag[key] = value;
+//     }
+// }   

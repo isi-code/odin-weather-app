@@ -12,8 +12,9 @@ class WeatherApp {
 
   init() {
     const formSection = this.weatherDom.formSection();
+    const forecastSection = this.weatherDom.forecastSection();
     //The newly create form section is appended to the root tag
-    this.weatherDom.container.append(formSection);
+    this.weatherDom.container.append(formSection, forecastSection);
     this.#weatherForm();
   }
 
@@ -22,11 +23,11 @@ class WeatherApp {
     const form = this.weatherDom.searchWeatherForm;
 
     form.addEventListener('submit', async (e) => {
-      const weatherCard = await this.eventHandler.submitForm(e, (data) =>
-        this.weatherDom.currWeatherTable(data)
+      const weatherCards = await this.eventHandler.submitForm(e, (data) =>
+        this.weatherDom.weatherForecast(data)
       );
 
-      this.weatherDom.container.append(weatherCard);
+      this.weatherDom.forecastSect.append(weatherCards);
     });
   }
 }
