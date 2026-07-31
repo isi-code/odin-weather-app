@@ -2,16 +2,17 @@ export class WeatherAppDom {
   constructor(elem) {
     this.container = elem;
     this.searchWeatherForm = null;
+    this.forecastSect = null;
   }
 
   formSection() {
-    const formSectionTemp = {
+    const template = {
       tag: 'section',
       prop: { className: 'formSect' },
       children: [{ tag: 'h1', prop: { textContent: 'Weather app' } }],
     };
 
-    const formSection = this.#createDOM(formSectionTemp);
+    const formSection = this.#createDOM(template);
     const form = this.#createForm();
     this.searchWeatherForm = form;
 
@@ -37,6 +38,19 @@ export class WeatherAppDom {
             placeholder: 'Example: Tijuana',
             name: 'place',
             id: 'place',
+          },
+        },
+        { tag: 'label', prop: { textContent: 'Days', htmlFor: 'days' } },
+        {
+          tag: 'input',
+          prop: {
+            type: 'number',
+            min: 1,
+            placeholder: 'Example: 7 (Max: 15)',
+            value: 7,
+            max: 15,
+            name: 'days',
+            id: 'days',
           },
         },
         {

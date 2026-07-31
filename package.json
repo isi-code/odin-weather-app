@@ -13,7 +13,7 @@
   "keywords": [],
   "author": "isi-code",
   "license": "ISC",
-  "packageManager": "pnpm@11.17.0",
+  "packageManager": "pnpm@11.18.0",
   "type": "module",
   "private": true,
   "dependencies": {

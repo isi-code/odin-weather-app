@@ -7,10 +7,11 @@ export class WeatherAppLogic {
   async submitForm(e, createWeatherTable) {
     e.preventDefault();
     const form = e.target;
-    const { place, tempUnit } = form.elements;
+    const { place, days, tempUnit } = form.elements;
 
     const weatherForecast = await this.weatherForecast.getWeatherData(
       place.value,
+      parseInt(days.value),
       tempUnit.value
     );
     this.weatherForecastData = weatherForecast;

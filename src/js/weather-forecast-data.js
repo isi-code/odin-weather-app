@@ -7,7 +7,7 @@ export class WeatherForecast {
     this.#weatherAPI = apiKey;
   }
 
-  async getWeatherData(place, tempUnit) {
+  async getWeatherData(place, days, tempUnit) {
     try {
       const requestWeather = await fetch(
         `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${place}?unitGroup=${tempUnit}&key=${this.#weatherAPI}`
@@ -20,10 +20,9 @@ export class WeatherForecast {
         and put it into an object where it is ready to use.
       */
       return await Promise.all(
-        weatherData.days.slice(0, 6).map(async (day) => {
+        weatherData.days.slice(0, days).map(async (day) => {
           const {
             description,
-            //conditions,
             datetime,
             temp,
             icon,

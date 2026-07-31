@@ -8,7 +8,7 @@
 
 **Libraries**
 
-- `date-fns` 
+- `date-fns`
 - Lightweight library for date formatting
 
 ## What I learned
