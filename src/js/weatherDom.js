@@ -220,7 +220,20 @@ export class WeatherAppDom {
   #createDOM(obj) {
     const tag = document.createElement(obj.tag);
 
-    if (obj.prop) Object.assign(tag, obj.prop);
+    if (obj.prop) {
+      for (const [attr, value] of Object.entries(obj.prop)) {
+        // This condition checks if the value of the attribute is an object or a primitive value
+        if (typeof value === 'object' && value !== null) {
+          // Checks if the attribute exists on the tag, and accepts an object
+          if (attr in tag && typeof tag[attr] === 'object') {
+            Object.assign(tag[attr], value);
+          }
+        } else {
+          // Add attributes directly if the values given isn't an object
+          tag[attr] = value;
+        }
+      }
+    }
 
     if (obj.children) {
       const content = obj.children.map((el) => {
