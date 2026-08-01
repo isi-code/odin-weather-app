@@ -4,7 +4,7 @@ export class WeatherAppLogic {
     this.weatherForecastData = null;
   }
 
-  async submitForm(e, createWeatherTable) {
+  async submitForm(e, createWeatherCardSection) {
     e.preventDefault();
     const form = e.target;
     const { place, days, tempUnit } = form.elements;
@@ -14,9 +14,10 @@ export class WeatherAppLogic {
       parseInt(days.value),
       tempUnit.value
     );
+    
     this.weatherForecastData = weatherForecast;
 
-    const weatherCard = createWeatherTable(this.weatherForecastData);
-    return weatherCard;
+    const weatherCardSection = createWeatherCardSection(this.weatherForecastData);
+    return weatherCardSection;
   }
 }

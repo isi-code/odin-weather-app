@@ -147,32 +147,102 @@ export class WeatherAppDom {
     return initSection;
   }
 
-  extendedWeatherTable(weatherData) {
-    const extWeatherData = weatherData;
+  weatherForecast(weatherData) {
+    const template = {
+      tag: 'div',
+      prop: { className: 'cardsCont' },
+    };
 
-    return extWeatherData.map((cardData) => {
-      const cardTemplate = this.#attachDataTable(cardData);
-      const weatherCard = this.#createDOM(cardTemplate);
+    const cardsContainer = this.#createDOM(template);
 
-      return weatherCard;
+    const weatherCards = weatherData.map((dayData, idx) => {
+      const { fullDate, icon, description, temp } = dayData;
+
+      const card = this.#weatherCard(fullDate, icon, description, temp, idx);
+      const table = this.#weatherTable(dayData);
+      card.append(table);
+
+      return card;
     });
+
+    cardsContainer.append(...weatherCards);
+
+    return cardsContainer;
   }
 
-  #attachDataTable(data) {
-    const {
-      fullDate,
-      icon,
-      description,
-      temp,
-      sunrise,
-      sunset,
-      tempmin,
-      tempmax,
-    } = data;
+  #weatherTable(data) {
+    const { sunrise, sunset, tempmin, tempmax } = data;
 
-    return {
+    const template = {
+      tag: 'table',
+      children: [
+        {
+          tag: 'thead',
+          children: [
+            {
+              tag: 'tr',
+              children: [
+                {
+                  tag: 'th',
+                  prop: {
+                    textContent: 'Weather Details',
+                    colSpan: 2,
+                    scope: 'col',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          tag: 'tbody',
+          children: [
+            {
+              tag: 'tr',
+              children: [
+                { tag: 'td', prop: { textContent: 'Sunrise', scope: 'row' } },
+                { tag: 'td', prop: { textContent: sunrise } },
+              ],
+            },
+            {
+              tag: 'tr',
+              children: [
+                { tag: 'td', prop: { textContent: 'Sunset', scope: 'row' } },
+                { tag: 'td', prop: { textContent: sunset } },
+              ],
+            },
+            {
+              tag: 'tr',
+              children: [
+                {
+                  tag: 'td',
+                  prop: { textContent: 'Min Temperature', scope: 'row' },
+                },
+                { tag: 'td', prop: { textContent: tempmin } },
+              ],
+            },
+            {
+              tag: 'tr',
+              children: [
+                {
+                  tag: 'td',
+                  prop: { textContent: 'Max Temperature', scope: 'row' },
+                },
+                { tag: 'td', prop: { textContent: tempmax } },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    return this.#createDOM(template);
+  }
+
+  #weatherCard(fullDate, icon, description, temp, idx) {
+    const template = {
       tag: 'div',
-      prop: { className: 'weatherCard' },
+      prop: { className: 'weatherCard', dataset: { cardIdx: idx } },
       children: [
         {
           tag: 'div',
@@ -197,60 +267,11 @@ export class WeatherAppDom {
             },
           ],
         },
-        {
-          tag: 'table',
-          children: [
-            {
-              tag: 'thead',
-              children: [
-                {
-                  tag: 'tr',
-                  children: [
-                    {
-                      tag: 'th',
-                      prop: { textContent: 'Weather Details', colSpan: 2 },
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              tag: 'tbody',
-              children: [
-                {
-                  tag: 'tr',
-                  children: [
-                    { tag: 'td', prop: { textContent: 'Sunrise' } },
-                    { tag: 'td', prop: { textContent: sunrise } },
-                  ],
-                },
-                {
-                  tag: 'tr',
-                  children: [
-                    { tag: 'td', prop: { textContent: 'Sunset' } },
-                    { tag: 'td', prop: { textContent: sunset } },
-                  ],
-                },
-                {
-                  tag: 'tr',
-                  children: [
-                    { tag: 'td', prop: { textContent: 'Min Temperature' } },
-                    { tag: 'td', prop: { textContent: tempmin } },
-                  ],
-                },
-                {
-                  tag: 'tr',
-                  children: [
-                    { tag: 'td', prop: { textContent: 'Max Temperature' } },
-                    { tag: 'td', prop: { textContent: tempmax } },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
       ],
     };
+
+    const weatherCard = this.#createDOM(template);
+    return weatherCard;
   }
 
   #createDOM(obj) {

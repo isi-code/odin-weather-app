@@ -30,11 +30,11 @@ class WeatherApp {
     const form = this.weatherDom.searchWeatherForm;
 
     form.addEventListener('submit', async (e) => {
-      const weatherCard = await this.eventHandler.submitForm(e, (data) =>
-        this.weatherDom.currWeatherTable(data)
+      const weatherCards = await this.eventHandler.submitForm(e, (data) =>
+        this.weatherDom.weatherForecast(data)
       );
 
-      this.weatherDom.container.append(weatherCard);
+      this.weatherDom.forecastSect.append(weatherCards);
     });
   }
 }
