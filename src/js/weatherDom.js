@@ -9,7 +9,12 @@ export class WeatherAppDom {
     const template = {
       tag: 'section',
       prop: { className: 'formSect' },
-      children: [{ tag: 'h1', prop: { textContent: 'Weather app' } }],
+      children: [
+        {
+          tag: 'h1',
+          prop: { textContent: 'Fill the form to get the weather forecast' },
+        },
+      ],
     };
 
     const formSection = this.#createDOM(template);
@@ -26,10 +31,6 @@ export class WeatherAppDom {
       tag: 'form',
       prop: { name: 'searchWeather' },
       children: [
-        {
-          tag: 'h2',
-          prop: { textContent: 'Fill the form to get the weather forecast' },
-        },
         { tag: 'label', prop: { textContent: 'Location', htmlFor: 'place' } },
         {
           tag: 'input',
@@ -103,12 +104,47 @@ export class WeatherAppDom {
     return form;
   }
 
-  currWeatherTable(weatherData) {
-    const currWeatherData = weatherData[0];
-    const weatherCardTemplate = this.#attachDataTable(currWeatherData);
-    const weatherCard = this.#createDOM(weatherCardTemplate);
+  forecastSection() {
+    const template = {
+      tag: 'section',
+      prop: { className: 'forecastSect' },
+    };
 
-    return weatherCard;
+    const formSection = this.#createDOM(template);
+    this.forecastSect = formSection;
+
+    return formSection;
+  }
+
+  initForecastSection() {
+    const template = {
+      tag: 'article',
+      children: [
+        { tag: 'h2', prop: { textContent: 'Weather App' } },
+
+        {
+          tag: 'b',
+          children: [
+            {
+              tag: 'p',
+              prop: { textContent: 'Description' },
+            },
+          ],
+        },
+
+        {
+          tag: 'p',
+          prop: {
+            textContent:
+              'This is a weather app that to consult the weather forecast from any location. It works using the visual crossing API. \n To consult the weather app you just have to complete the form fillling out the location name, the number of days to display and choose if the temperature should be on celsius or farenheit.',
+          },
+        },
+      ],
+    };
+
+    const initSection = this.#createDOM(template);
+
+    return initSection;
   }
 
   extendedWeatherTable(weatherData) {

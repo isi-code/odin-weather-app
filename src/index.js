@@ -12,8 +12,16 @@ class WeatherApp {
 
   init() {
     const formSection = this.weatherDom.formSection();
+    
+    const forecastSection = this.weatherDom.forecastSection();
+
+    if (!this.weatherForecastData) {
+      const fcstSectionInit = this.weatherDom.initForecastSection();
+      forecastSection.append(fcstSectionInit);
+    }
+
     //The newly create form section is appended to the root tag
-    this.weatherDom.container.append(formSection);
+    this.weatherDom.container.append(formSection, forecastSection);
     this.#weatherForm();
   }
 
