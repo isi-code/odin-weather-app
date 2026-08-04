@@ -12,7 +12,7 @@ class WeatherApp {
 
   init() {
     const formSection = this.weatherDom.formSection();
-    
+
     const forecastSection = this.weatherDom.forecastSection();
 
     if (!this.weatherForecastData) {
@@ -28,13 +28,21 @@ class WeatherApp {
   async #weatherForm() {
     // This is the form element inside the formSection created with the `init()` method
     const form = this.weatherDom.searchWeatherForm;
+    const forecastSection = this.weatherDom.forecastSect;
 
     form.addEventListener('submit', async (e) => {
-      const weatherCards = await this.eventHandler.submitForm(e, (data) =>
-        this.weatherDom.weatherForecast(data)
-      );
+      // Method to create weather forecast cards container
+      const weatherCards = await this.eventHandler.submitForm(e, this.weatherDom.createWeatherCards);
 
-      this.weatherDom.forecastSect.append(weatherCards);
+      const switchBtnContainer = this.weatherDom.switchTempUnitCont();
+      const switchBtn = switchBtnContainer.querySelector('#switchTempUnitBtn');
+
+      forecastSection.replaceChildren(switchBtnContainer, weatherCards);
+
+      switchBtn.addEventListener(
+        'click',
+        this.eventHandler.updateCardsTempUnits
+      );
     });
   }
 }

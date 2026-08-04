@@ -33,19 +33,20 @@ export class WeatherForecast {
             sunset,
           } = day;
 
-          const tempUnitSymbol = tempUnit === 'metric' ? '°C' : '°F';
           const { default: iconUrl } = await import(`../img/icons/${icon}.svg`);
 
           return {
             icon: iconUrl,
             description,
             fullDate: format(new Date(datetime), 'PPPP'),
-            temp: temp + tempUnitSymbol,
-            feelslike: `Feels like ${feelslike}${tempUnitSymbol}`,
-            tempmax: tempmax + tempUnitSymbol,
-            tempmin: tempmin + tempUnitSymbol,
+            temp: temp,
+            feelslike: feelslike,
+            tempmax: tempmax,
+            tempmin: tempmin,
             sunrise,
             sunset,
+            tempUnit,
+            tempSymbol: tempUnit === 'metric' ? '°C' : '°F',
           };
         })
       );
