@@ -23,11 +23,20 @@ class WeatherApp {
     const form = this.weatherDom.searchWeatherForm;
 
     form.addEventListener('submit', async (e) => {
-      const weatherCards = await this.eventHandler.submitForm(e, (data) =>
-        this.weatherDom.weatherForecast(data)
+      const weatherCards = await this.eventHandler.submitForm(e, (data) => {
+        // Method to create weather forecast cards container
+        const cardCont = this.weatherDom.weatherCardsCont(data);
+
+        const switchBtn = cardCont.querySelector('#switchTempUnit');
+        const cards = cardCont.querySelectorAll('.weatherCard');
+
+        switchBtn.addEventListener('click', this.eventHandler.updateCardTempUnits(cards));
+
+        return cardCont
+      }
       );
 
-      this.weatherDom.forecastSect.append(weatherCards);
+      this.weatherDom.forecastSect.replaceChildren(weatherCards);
     });
   }
 }

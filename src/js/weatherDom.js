@@ -57,6 +57,10 @@ export class WeatherAppDom {
           tag: 'fieldset',
           children: [
             {
+              tag: 'legend',
+              prop: { textContent: 'Choose a temparature unit' },
+            },
+            {
               tag: 'div',
               prop: { className: 'tempMetric' },
               children: [
@@ -113,30 +117,75 @@ export class WeatherAppDom {
     const formSection = this.#createDOM(template);
     this.forecastSect = formSection;
 
-    return formSection
+    return formSection;
   }
 
-  weatherForecast(weatherData) {
+  initForecastSection() {
+    const template = {
+      tag: 'article',
+      children: [
+        { tag: 'h2', prop: { textContent: 'Weather App' } },
+
+        {
+          tag: 'b',
+          children: [
+            {
+              tag: 'p',
+              prop: { textContent: 'Description' },
+            },
+          ],
+        },
+
+        {
+          tag: 'p',
+          prop: {
+            textContent:
+              'This is a weather app that to consult the weather forecast from any location. It works using the visual crossing API. \n To consult the weather app you just have to complete the form fillling out the location name, the number of days to display and choose if the temperature should be on celsius or farenheit.',
+          },
+        },
+      ],
+    };
+
+    const initSection = this.#createDOM(template);
+
+    return initSection;
+  }
+
+  weatherCardsCont(weatherData, tempUnit) {
     const template = {
       tag: 'div',
       prop: { className: 'cardsCont' },
+      children: [
+        {
+          tag: 'h2',
+          prop: { textContent: 'Weather forecast' },
+        },
+        {
+          tag: 'button',
+          prop: {
+            id:'switchTempUnit',
+            textContent: `Switch to ${tempUnit === 'metric' ? 'Farenheit' : 'Celsius'}`,
+          },
+        },
+      ],
     };
 
     const cardsContainer = this.#createDOM(template);
 
-    const weatherCards = weatherData.map((dayData, idx) => { 
-      const {
+    const weatherCards = weatherData.map((dayData) => {
+      const { fullDate, icon, description, temp, feelslike } = dayData;
+
+      const card = this.#weatherCard(
         fullDate,
         icon,
         description,
         temp,
-      } = dayData;
+        feelslike
+      );
+      const table = this.#weatherTable(dayData, tempUnit);
+      card.append(table);
 
-      const card = this.#weatherCard(fullDate, icon, description, temp, idx);
-      const table = this.#weatherTable(dayData);
-      card.append(table)
-      
-      return card
+      return card;
     });
 
     cardsContainer.append(...weatherCards);
@@ -189,15 +238,21 @@ export class WeatherAppDom {
             {
               tag: 'tr',
               children: [
-                { tag: 'td', prop: { textContent: 'Min Temperature', scope: 'row' } },
-                { tag: 'td', prop: { textContent: tempmin } },
+                {
+                  tag: 'td',
+                  prop: { textContent: 'Min Temperature', scope: 'row' },
+                },
+                { tag: 'td', prop: { textContent: tempmin, className: 'tempValue', } },
               ],
             },
             {
               tag: 'tr',
               children: [
-                { tag: 'td', prop: { textContent: 'Max Temperature', scope: 'row' } },
-                { tag: 'td', prop: { textContent: tempmax } },
+                {
+                  tag: 'td',
+                  prop: { textContent: 'Max Temperature', scope: 'row' },
+                },
+                { tag: 'td', prop: { textContent: tempmax, className: 'tempValue', } },
               ],
             },
           ],
@@ -208,10 +263,13 @@ export class WeatherAppDom {
     return this.#createDOM(template)
   }
 
-  #weatherCard(fullDate, icon, description, temp, idx) {
+  #weatherCard(fullDate, icon, description, temp, feelslike, tempUnit) {
     const template = {
       tag: 'div',
-      prop: { className: 'weatherCard', dataset:{ cardIdx: idx } },
+      prop: {
+        className: 'weatherCard',
+        dataset: { cardIdx: crypto.randomUUID(), tempUnit: tempUnit  },
+      },
       children: [
         {
           tag: 'div',
@@ -226,12 +284,14 @@ export class WeatherAppDom {
           prop: { className: 'cardBody' },
           children: [
             { tag: 'p', prop: { textContent: description } },
-            { tag: 'span', prop: { textContent: temp } },
+            { tag: 'span', prop: { textContent: temp, className: 'tempValue', } },
             {
               tag: 'small',
               prop: {
-                textContent: `Feels like ${temp}`,
-                style: 'font-style: italic;',
+                textContent: `Feels like ${feelslike}`,
+                style: { fontStyle : 'italic' },
+                className: 'tempValue',
+                dataset: {}
               },
             },
           ],
