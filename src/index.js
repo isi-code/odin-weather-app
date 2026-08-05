@@ -32,17 +32,26 @@ class WeatherApp {
 
     form.addEventListener('submit', async (e) => {
       // Method to create weather forecast cards container
-      const weatherCards = await this.eventHandler.submitForm(e, this.weatherDom.createWeatherCards);
-
-      const switchBtnContainer = this.weatherDom.switchTempUnitCont();
-      const switchBtn = switchBtnContainer.querySelector('#switchTempUnitBtn');
-
-      forecastSection.replaceChildren(switchBtnContainer, weatherCards);
-
-      switchBtn.addEventListener(
-        'click',
-        this.eventHandler.updateCardsTempUnits
+      const weatherCards = await this.eventHandler.submitForm(
+        e,
+        this.weatherDom.createWeatherCards
       );
+
+      if (weatherCards instanceof Error) {
+        const error = weatherCards;
+        const errorSection = this.weatherDom.errorMessage(error);
+        forecastSection.replaceChildren(errorSection);
+      } else {
+        const switchBtnContainer = this.weatherDom.switchTempUnitCont();
+        const switchBtn =
+          switchBtnContainer.querySelector('#switchTempUnitBtn');
+        forecastSection.replaceChildren(switchBtnContainer, weatherCards);
+
+        switchBtn.addEventListener(
+          'click',
+          this.eventHandler.updateCardsTempUnits
+        );
+      }
     });
   }
 }

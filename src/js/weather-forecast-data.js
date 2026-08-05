@@ -13,6 +13,14 @@ export class WeatherForecast {
         `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${place}?unitGroup=${tempUnit}&key=${this.#weatherAPI}`
       );
 
+      // Explicitly check if the response was successful
+      if (!requestWeather.ok) {
+        const errorData = await requestWeather.json();
+        throw new Error(
+          errorData.message || `HTTP error! status: ${requestWeather.status}`
+        );
+      }
+
       const weatherData = await requestWeather.json();
 
       /*
@@ -51,7 +59,7 @@ export class WeatherForecast {
         })
       );
     } catch (error) {
-      console.error(error);
+      return error;
     }
   }
 }

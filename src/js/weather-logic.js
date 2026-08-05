@@ -16,18 +16,18 @@ export class WeatherAppLogic {
       tempUnit.value
     );
 
-    if (weatherForecastData) {
-      this.weatherForecastData = weatherForecastData;
+    if (weatherForecastData instanceof Error) return weatherForecastData;
 
-      const weatherCardSection = createWeatherCardSection(
-        this.weatherForecastData
-      );
+    this.weatherForecastData = weatherForecastData;
 
-      this.tempUnit = tempUnit.value;
+    const weatherCardSection = createWeatherCardSection(
+      this.weatherForecastData
+    );
 
-      return weatherCardSection;
-    }
-  }
+    this.tempUnit = tempUnit.value;
+
+    return weatherCardSection;
+  };
 
   updateCardsTempUnits = () => {
     const tempValues = Array.from(document.getElementsByClassName('tempValue'));

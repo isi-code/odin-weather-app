@@ -164,6 +164,8 @@ export class WeatherAppDom {
   }
 
   createWeatherCards = (weatherData) => {
+    if (weatherData instanceof Error) return weatherData;
+
     const template = {
       tag: 'div',
       prop: { className: 'cardsCont' },
@@ -182,6 +184,29 @@ export class WeatherAppDom {
     cardsContainer.append(...weatherCards);
 
     return cardsContainer;
+  };
+
+  errorMessage(err) {
+    const template = {
+      tag: 'div',
+      children: [
+        { tag: 'h2', prop: { textContent: 'Something went wrong!?' } },
+        {
+          tag: 'b',
+          prop: {
+            textContent: err.name,
+          },
+        },
+        {
+          tag: 'p',
+          prop: {
+            textContent: err.message,
+          },
+        },
+      ],
+    };
+
+    return this.#createDOM(template);
   }
 
   #weatherTable(data) {
