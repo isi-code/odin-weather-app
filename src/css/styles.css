@@ -27,3 +27,28 @@ form {
   padding: 1rem;
   border: 5px solid black;
 }
+
+.forecastSect{
+  text-align: center;
+}
+
+.forecastSect article{
+  margin: auto;
+  max-width: 26rem;
+  padding: 1rem;
+  
+}
+
+.cardsCont{
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-content: center;
+  max-width: 75%;
+  margin: auto;
+}
+
+.weatherCard{
+  outline: 1px solid black;
+}
