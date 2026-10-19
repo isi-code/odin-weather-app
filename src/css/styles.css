@@ -32,7 +32,58 @@ body {
 form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-  border: 5px solid black;
+  gap: 0.6rem;
+  padding: 0.9rem;
+  background-color: rgb(239, 244, 243);
+  border: 0.3rem solid black;
 }
+
+form label, fieldset legend {
+  font-size: 1.2rem;
+  text-align: left;
+}
+
+form input{
+  padding: 0.3rem;
+}
+
+button{
+  padding: 0.6rem 1.2rem;
+  margin: auto;
+  cursor:pointer;
+}
+
+fieldset div.tempMetric {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
+form label, fieldset input[type=radio] {
+  cursor: pointer;
+}
+
+fieldset input[type=radio] {
+  margin: .6rem;
+}
+
+.forecastSect > div:first-of-type {
+  background-color: rgb(239, 244, 243);
+  border: 0.3rem solid black;
+  padding: 0.9rem;
+}
+
+.forecastSect h2 {
+  margin-top: 0;
+}
+
+.forecastSect p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+/* 
+.cardsCont{
+  display:flex;
+  justify-content: center;
+} */
