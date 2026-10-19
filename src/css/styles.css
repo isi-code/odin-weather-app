@@ -3,21 +3,30 @@
   src: url('../fonts/newsweekly-Regular.ttf');
 }
 
-* {
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
   font-family: 'newsweekly', serif;
+}
+
+body {
+  background-image: url('../img/blue-fade.jpg');
+  background-size: cover;
 }
 
 #weatherApp {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
+  gap:1.2rem;
+  width:85%;
+  margin: auto;
+  text-align: center;
 }
 
-.formSect > h1 {
-  text-align: center;
+#weatherApp section {
+  width:clamp(12rem, 75%, 30rem);
+  margin: auto;
 }
 
 form {
