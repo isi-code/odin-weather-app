@@ -65,20 +65,28 @@ export class WeatherAppDom {
               prop: { className: 'tempMetric' },
               children: [
                 {
-                  tag: 'input',
-                  prop: {
-                    type: 'radio',
-                    id: 'celsius',
-                    name: 'tempUnit',
-                    value: 'metric',
-                    checked: true,
-                  },
+                  tag: 'div',
+                  children: [
+                    {
+                      tag: 'input',
+                      prop: {
+                        type: 'radio',
+                        id: 'celsius',
+                        name: 'tempUnit',
+                        value: 'metric',
+                        checked: true,
+                      },
+                    },
+                    {
+                      tag: 'label',
+                      prop: { textContent: 'Celsius (°C)', htmlFor: 'celsius' },
+                    },
+                  ]
                 },
                 {
-                  tag: 'label',
-                  prop: { textContent: 'Celsius (°C)', htmlFor: 'celsius' },
-                },
-                {
+                  tag: 'div',
+                  children: [
+                    {
                   tag: 'input',
                   prop: {
                     type: 'radio',
@@ -86,11 +94,13 @@ export class WeatherAppDom {
                     name: 'tempUnit',
                     value: 'us',
                   },
-                },
-                {
-                  tag: 'label',
-                  prop: { textContent: 'Farenheit (°F)', htmlFor: 'faren' },
-                },
+                    },
+                    {
+                      tag: 'label',
+                      prop: { textContent: 'Farenheit (°F)', htmlFor: 'faren' },
+                    },
+                  ]
+                }
               ],
             },
           ],
@@ -121,7 +131,7 @@ export class WeatherAppDom {
 
   initForecastSection() {
     const template = {
-      tag: 'article',
+      tag: 'div',
       children: [
         { tag: 'h2', prop: { textContent: 'App Description' } },
         {
