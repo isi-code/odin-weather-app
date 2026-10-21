@@ -24,7 +24,8 @@ body {
   text-align: center;
 }
 
-#weatherApp section {
+#weatherApp .formSect,
+.forecastSect > div:first-of-type {
   width:clamp(12rem, 75%, 30rem);
   margin: auto;
 }
@@ -43,14 +44,13 @@ form label, fieldset legend {
   text-align: left;
 }
 
-form input{
+form input {
   padding: 0.3rem;
 }
 
-button{
+button {
   padding: 0.6rem 1.2rem;
   margin: auto;
-  cursor:pointer;
 }
 
 fieldset div.tempMetric {
@@ -59,12 +59,20 @@ fieldset div.tempMetric {
   justify-content: space-evenly;
 }
 
-form label, fieldset input[type=radio] {
+form label,
+button,
+fieldset input[type=radio] {
   cursor: pointer;
 }
 
 fieldset input[type=radio] {
   margin: .6rem;
+}
+
+.forecastSect {
+  display:flex;
+  flex-direction:column;
+  gap:1.2rem;
 }
 
 .forecastSect > div:first-of-type {
@@ -78,12 +86,28 @@ fieldset input[type=radio] {
 }
 
 .forecastSect p {
+  width:85%;
+  margin:auto;
   font-size: 1.2rem;
   line-height: 1.6;
 }
 
-/* 
-.cardsCont{
+.cardsCont {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0.9rem;
+}
+
+.weatherCard {
   display:flex;
-  justify-content: center;
-} */
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background-color: rgba(239, 244, 243, 0.6);
+}
+
+.weatherCard img {
+  display:inline-block;
+  width:75%;
+  max-height:100px;
+}
